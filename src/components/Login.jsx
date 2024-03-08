@@ -2,53 +2,66 @@
 import React, { useState }  from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLoginFunctionMutation } from '../API/api';
+import { useLoginMutation } from '../API/api';
+import { setToken } from '../redux/authslice';
 
-const LoginForm = () => {
+const Login = () => {
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [login, { isLoading, error }] = useLoginMutation();
 
-  const [login, { isLoading, error }] = useLoginFunctionMutation();
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try{
+    
+    try {
       const user = await login({ username, password }).unwrap();
-      console.log('Login successful:', user);
-      navigate('/');
-    } catch (err) {
-      console.error('Login Failed:', err);
+      console.log('signup results:', user.token);
+      if(response.token) dispatch(setToken(user.token));
+      setUsername('');
+      setPassword('');
+      navigate('/')
+    } catch (error) {
+      alert("Authorization failed" + (err.data?.message) || "Please Try Again");
+      console.log(error.message)
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type='text'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required 
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          />
-      </label>
-      <button type='submit' disabled={isLoading}>
-        {isLoading ? 'Logging in...' : 'Log In'}
-      </button>
-      {error && <p>Login failed: {error.data?.message || 'Please try again'}</p>}
-    </form>
+    <div>
+      <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Username:
+            <input
+              type='text'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required 
+              />
+          </label>
+          <label>
+            Password:
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              />
+          </label>
+          <button type='submit' disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Log In'}
+          </button>
+          {error && <p>Login failed: {error.data?.message || 'Please try again'}</p>}
+          <button className="books" onClick={() => navigate('/books')}>Available Books</button>
+          <button className="homeButton" onClick={() => navigate('/')}>Home</button>
+        </form>
+    </div>
   );
 };
 
-export default LoginForm
+export default Login

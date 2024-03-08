@@ -28,6 +28,8 @@ console.log(books)
           ))}
         </ul>
         <button className="registerButton" onClick={() => navigate('/users/register')}>Register Here!</button>
+        <button className="loginButton" onClick={() => navigate('/users/login')}>Login Here!</button>
+         <button className="homeButton" onClick={() => navigate('/')}>Home</button>
       </div>
     );
 };
