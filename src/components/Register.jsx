@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function RegistrationForm() {
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,21 +23,23 @@ export default function RegistrationForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if(!validateInputs(username) || !validateInputs(password)) {
-      alert("You must enter both username and password")
+    if(!validateInputs(email) || !validateInputs(password)) {
+      alert("You must enter both email and password")
       return;
     }
 
     try {
-      const response = await register({ username, password }).unwrap();
-      console.log('signup results:', response.token);
+      const response = await register({ email, password, firstname, lastname }).unwrap();
+   
 
       if(response.token) {
         dispatch(setToken(response.token));
       }
 
-      setUsername('');
+      setEmail('');
       setPassword('');
+      setfirstname('')
+      setlastname('')
       navigate('/users/me')
     } catch (error) {
       console.log(error.message)
@@ -48,8 +52,8 @@ export default function RegistrationForm() {
           <label>
             Username:{" "}
             <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               />
           </label>
           <label>
@@ -62,12 +66,32 @@ export default function RegistrationForm() {
             }}
             />
           </label>
+          <label>
+            First Name:{" "}
+            <input 
+            type="text"
+            value={firstname}
+            onChange={(e) => {
+              setfirstname(e.target.value);
+            }}
+            />
+          </label>
+          <label>
+            Last Name:{" "}
+            <input 
+            type="text"
+            value={lastname}
+            onChange={(e) => {
+              setlastname(e.target.value);
+            }}
+            />
+          </label>
           <button type='submit' disabled={isUpdating}>
             {isUpdating ? 'Registering...' : 'Register'}
             </button>
             {error && <p>Registration failed: {error.data?.message || "Please try again"}</p>}
           <button className="homeButton" onClick={() => navigate('/')}>Home</button>
-          <button className="books" onClick={() => navigate('/books')}>Available Books</button>
+          <button className="books" onClick={() => navigate('/books')}>Books</button>
         </form>
     </div>
   )

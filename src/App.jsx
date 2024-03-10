@@ -18,6 +18,7 @@ function App() {
         <Route path='/books/:bookId' element={<SingleBook />} />
         <Route path='/users/login' element={<Login />} />
         <Route path='/users/me' element={<Profile />} />
+        <Route path='/reservations' element={<Profile />} />
       </Routes>
     </>
   );

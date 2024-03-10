@@ -22,29 +22,58 @@ export const api = createApi({
         query: (bookId) => `/books/${bookId}`,
       }),
       registrationForm: builder.mutation({
-          query: (credentials) => ({
+          query: (body) => ({
             url: '/users/register',
             method: 'POST',
-            body: credentials,
+            body,
           }),
       }),
       authenticate: builder.query({
         query: () => ({
           url:'/users/me'
+          
         })
       }),
       login: builder.mutation({
-        query: (credentials) => ({
+        query: (body) => ({
           url: '/users/login',
           method: 'POST',
-          body: credentials,
+          body,
         }),
       }),
       home: builder.query({
-        query: () => '/',
-      })
+        query: () => '/', 
+      }),
+      checkoutBook: builder.mutation({
+        query: ({ bookId, ...body }) => ({
+          url: `/books/${bookId}`,
+          method: 'PATCH',
+          body,
+        })
+      }),
+      // returnBook: builder.mutation({
+      //   query: ({ bookId, ...body }) => ({
+      //     url: `/books/${bookId}`,
+      //     method: 'PATCH',
+      //     body,
+      //   }),
+      // }),
+      fetchUserDetails: builder.query({
+        query: () => '/users/me',
+      }),
+      fetchCheckedOutBooks: builder.query({
+        query: () => `/reservations`,
+      }),
+      returnBook: builder.mutation({
+        query: ({ id }) => ({
+          url: `/reservations/${id}`,
+          method: 'DELETE',
+        }),
+      }),
+      refetchCheckedOutBooks: builder.query({
+        query: () => '/reservations',
+      }),
     }),
-
 });
 
 
@@ -53,7 +82,13 @@ export const {
   useRegistrationFormMutation, 
   useFetchBookByIdQuery, 
   useLoginMutation, 
-  useAuthenticateQuery
+  useAuthenticateQuery,
+  useCheckoutBookMutation,
+  useFetchUserDetailsQuery,
+  useFetchCheckedOutBooksQuery,
+  useReturnBookMutation,
+  // useUpdateBookMutation,
+  useRefetchCheckedOutBooksQuery,
 } = api;
 
 

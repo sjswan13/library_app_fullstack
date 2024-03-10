@@ -7,26 +7,39 @@ import { setToken } from '../redux/authslice';
 
 const Login = () => {
   
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, { isLoading, error }] = useLoginMutation();
+
+  const [login, { isLoading: isUpdating, error, data }] = useLoginMutation();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    
+    const validateInputs = (input) => {
+      return input.trim().length > 0;
+    }
+
+    if(!validateInputs(email) || !validateInputs(password)) {
+      alert("You must enter both email and password")
+      return;
+    }
+
     try {
-      const user = await login({ username, password }).unwrap();
-      console.log('signup results:', user.token);
-      if(response.token) dispatch(setToken(user.token));
-      setUsername('');
+
+      const response = await login({ email, password }).unwrap();
+     
+       
+      if(response.token) {
+        dispatch(setToken(response.token))
+      };
+      setEmail('');
       setPassword('');
       navigate('/')
     } catch (error) {
-      alert("Authorization failed" + (err.data?.message) || "Please Try Again");
+      alert("Authorization failed" + (error.data?.message) || "Please Try Again");
       console.log(error.message)
     }
   }
@@ -39,8 +52,8 @@ const Login = () => {
             Username:
             <input
               type='text'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
               />
           </label>
@@ -53,11 +66,9 @@ const Login = () => {
               required
               />
           </label>
-          <button type='submit' disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Log In'}
-          </button>
+          <button type='submit'>Log In</button>
           {error && <p>Login failed: {error.data?.message || 'Please try again'}</p>}
-          <button className="books" onClick={() => navigate('/books')}>Available Books</button>
+          <button className="books" onClick={() => navigate('/books')}>Books</button>
           <button className="homeButton" onClick={() => navigate('/')}>Home</button>
         </form>
     </div>
