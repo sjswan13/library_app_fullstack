@@ -12,7 +12,6 @@ function Profile() {
   const [returnBook, {isLoading: isUpdating, returnData}] = useReturnBookMutation();
 
   const handleReturnBook = async (id) => {
-    console.log('bookid*******', id)
     try{
       await returnBook({ id }).unwrap();
       // await refetchCheckedOutBooks();
@@ -29,7 +28,6 @@ function Profile() {
 
   const userFullName = userDetails ? `${userDetails.firstname || ''} ${userDetails.lastname || ''}` : '';
   const checkedOutBooksArray = checkedOutBooks.reservation || [];
-  console.log(checkedOutBooksArray, 'books')
   
   if(!data.isLoggedIn) {
     return (
