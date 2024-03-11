@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../API/api';
 import { setToken } from '../redux/authslice';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
 
 const Login = () => {
   
@@ -30,7 +31,7 @@ const Login = () => {
     try {
 
       const response = await login({ email, password }).unwrap();
-     
+      console.log('signup results:', response.token);
        
       if(response.token) {
         dispatch(setToken(response.token))
@@ -45,33 +46,69 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input
-              type='text'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-              />
-          </label>
-          <label>
-            Password:
-            <input
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              />
-          </label>
-          <button type='submit'>Log In</button>
-          {error && <p>Login failed: {error.data?.message || 'Please try again'}</p>}
-          <button className="books" onClick={() => navigate('/books')}>Books</button>
-          <button className="homeButton" onClick={() => navigate('/')}>Home</button>
-        </form>
-    </div>
+    <Container component='main' maxWidth='xs'>
+      <Box
+      sx={{
+        marginTop: 8,
+        display:'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+      >
+      <Typography component='h1' variant='h5'>
+        Login
+      </Typography>
+      <Box 
+      component='form'
+      onSubmit={handleSubmit}
+      noValidate
+      sx={{ mt: 1 }}
+      >
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          label="Email Address"
+          name='email'
+          autoComplete='email'
+          autoFocus
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        >
+        </TextField>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />  
+        <Button
+          type='submit'
+          fullWidth
+          variant='contained'
+          sx={{ mt: 3, mb: 2 }}
+          disabled={isUpdating}  
+        >
+          {isUpdating ? 'Logging in...' : 'Log In'}
+        </Button>
+        {error && (
+          <Typography color='error' sx={{ mt: 2 }}>
+            Login Failed: {error.data?.message || 'Please Try Again'}
+          </Typography>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2}}>
+          <Button variant='outlined' onClick={() => navigate('/books')}>Books</Button>
+          <Button variant='outlined' onClick={() => navigate('/')}>Home</Button>
+        </Box>
+      </Box>
+      </Box>
+    </Container>
   );
 };
 

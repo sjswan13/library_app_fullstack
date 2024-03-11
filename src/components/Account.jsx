@@ -1,6 +1,8 @@
-/* TODO - add your code to create a functional React component that renders account details for a logged in user. Fetch the account data from the provided API. You may consider conditionally rendering a message for other users that prompts them to log in or create an account.  */
+import React from 'react'
 import Logout from './Logout'
 import { useAuthenticateQuery, useFetchUserDetailsQuery, useFetchCheckedOutBooksQuery, useReturnBookMutation } from "../API/api";
+import { CircularProgress, Typography, Button, List, ListItem, ListItemText, Box } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 function Profile() {
   
@@ -31,35 +33,38 @@ function Profile() {
   
   if(!data.isLoggedIn) {
     return (
-      <div>
-        <h1>Welcome {data.firstname}!</h1>
-        <h2>Account Details:</h2>
-        <p>Name: {userFullName}</p>
-        <p>Email: {data.email}</p>
+      <Box sx={{ p: 2 }}>
+        <Button
+        startIcon={<ArrowBackIcon/>}
+        sx={{ mb: 2 }}
+        onClick={() => window.history.back()}
+        >
+        Back to Catalog
+      </Button>
+        <Typography variant='h4' gutterBottom>Welcome {data.firstname}!</Typography>
+        <Typography variant='h5' gutterBottom>Account Details:</Typography>
+        <Typography>Name: {userFullName}</Typography>
+        <Typography>Email: {data.email}</Typography>
+        <Typography variant='h5' gutterBottom>Books Currently Checked Out:</Typography>
 
-        <h2>Books Currently Checked Out:</h2>
-        <ul>
+        <List>
           {checkedOutBooksArray.map((reservation) => (
-            <li key={reservation.id}>
-              <div>
-                {reservation.id}
-                <strong>Title:</strong> {reservation.title}
-              </div>
-              <div>
-                <strong>Author:</strong>{reservation.author}
-              </div>
-              <div>
-                <button onClick={() => handleReturnBook(reservation.id)}>Return Book</button>
-                <button className="books" onClick={() => navigate('/books')}>Books</button>
-              </div>
-            </li>
+            <ListItem key={reservation.id} divider>
+              <ListItemText
+                primary={reservation.title}
+                secondary={`Author: ${reservation.author}`}
+                />
+              <Button variant='containted' color='primary' onClick={() => handleReturnBook(reservation.id)} sx={{ mr: 1 }}>
+                Return Book
+              </Button>
+            </ListItem>
           ))}
-        </ul>
+        </List>
         <Logout />
-      </div>
+      </Box>
     );
   }
-  return <div>User is Logged in</div>
+  return <Typography>User is Logged in</Typography>;
 }
 
 

@@ -4,7 +4,8 @@ import {useParams, useNavigate } from 'react-router-dom';
 import { useFetchBookByIdQuery, useCheckoutBookMutation } from '../API/api';
 import CheckoutBook from './CheckoutBook';
 import { useSelector } from 'react-redux';
-
+import { Button, Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 const SingleBook= () => {
   const { bookId } = useParams();
@@ -26,26 +27,49 @@ const SingleBook= () => {
     }
   }
 
- 
-
-
   if(isLoading) return <div>Loading...</div>;
   if(error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
+    <Box sx={{ p: 3 }}>
+      <Button
+        startIcon={<ArrowBackIcon/>}
+        sx={{ mb: 2 }}
+        onClick={() => window.history.back()}
+        >
+        Back to Catalog
+      </Button>
       {book && (
-        <div>
-          <h2>{book.book.title}</h2>
-          <img src={book.book.coverimage} alt={`Cover of ${book.title}`} style={{ width: '200px'}} />
-          <p>Author: {book.book.author}</p>
-          <p>Description: {book.book.description}</p>
-          <p>Available for Checkout?{book.book.available ? ' Yes' : ' No'}</p>
-          <button className="homeButton" onClick={() => navigate('/')}>Home</button>
-          { token && book.book.available ? <CheckoutBook handleCheckoutClick={handleCheckoutClick} /> : null}
-        </div>
+        <Card sx={{ backgroundColor: 'lightgrey'}}>
+          <CardMedia
+          component='img'
+          image={book.book.coverimage}
+          alt={`Cover of ${book.book.title}`}
+          sx={{ width: 'auto', maxHeight: 600, margin: 'auto' }}
+          />
+        <CardContent>
+          <Typography gutterBottom variant='h5' component='div'>
+            {book.book.title}
+          </Typography>
+          <Typography variant='body2'color='text.secondary'>
+            Author: {book.book.author}
+          </Typography>
+          <Typography variant='body2' color='text.secondary'>
+            Description: {book.book.description}
+          </Typography>
+          {token && book.book.available && (
+            <Button onclick={handleCheckoutClick} variant='contained' color='primary' sx={{ mt: 2 }}>
+              Checkout
+            </Button>
+          )}
+        </CardContent>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+          <Button variant='outlined' onClick={() => navigate('/')} sx={{ mr: 1}}>Home</Button>
+          <Button variant='outlined' onClick={() => navigate('/books')}>Books</Button>
+        </Box>
+        </Card>
       )}
-    </div>
+    </Box>
   );
 };
 

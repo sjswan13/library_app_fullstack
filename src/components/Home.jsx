@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { selectToken } from '../redux/authslice'
+
 
 
 function Home() {
@@ -10,7 +10,7 @@ function Home() {
   const token = useSelector(state => state.auth.token);
 
   return (
-    <div>
+    <div className='home-container'>
       <h2>Welcome to the Book Buddy Library Page!!</h2>
       <p>Not a member? No problem, you can register for an account here:</p>
       { token ? <Link to='/users/me'>Go to Profile</Link> : <Link to='/users/register'>Register Here!</Link>}

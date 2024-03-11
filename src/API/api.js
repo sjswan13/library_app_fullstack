@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-// import RegistrationForm from '../components/Register';
+
 
 export const api = createApi({
   reducerPath: 'api',
@@ -51,13 +51,6 @@ export const api = createApi({
           body,
         })
       }),
-      // returnBook: builder.mutation({
-      //   query: ({ bookId, ...body }) => ({
-      //     url: `/books/${bookId}`,
-      //     method: 'PATCH',
-      //     body,
-      //   }),
-      // }),
       fetchUserDetails: builder.query({
         query: () => '/users/me',
       }),
@@ -87,7 +80,6 @@ export const {
   useFetchUserDetailsQuery,
   useFetchCheckedOutBooksQuery,
   useReturnBookMutation,
-  // useUpdateBookMutation,
   useRefetchCheckedOutBooksQuery,
 } = api;
 

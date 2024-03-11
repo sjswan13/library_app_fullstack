@@ -4,6 +4,7 @@ import { useRegistrationFormMutation } from '../API/api';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../redux/authslice';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Typography, Container, Box } from '@mui/material'
 
 export default function RegistrationForm() {
 
@@ -46,53 +47,77 @@ export default function RegistrationForm() {
     }
   }
   return (
-    <div>
-      <h2>Register</h2>
-        <form onSubmit = {handleSubmit}>
-          <label>
-            Username:{" "}
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              />
-          </label>
-          <label>
-            Password:{" "}
-            <input 
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            />
-          </label>
-          <label>
-            First Name:{" "}
-            <input 
-            type="text"
-            value={firstname}
-            onChange={(e) => {
-              setfirstname(e.target.value);
-            }}
-            />
-          </label>
-          <label>
-            Last Name:{" "}
-            <input 
-            type="text"
-            value={lastname}
-            onChange={(e) => {
-              setlastname(e.target.value);
-            }}
-            />
-          </label>
-          <button type='submit' disabled={isUpdating}>
-            {isUpdating ? 'Registering...' : 'Register'}
-            </button>
-            {error && <p>Registration failed: {error.data?.message || "Please try again"}</p>}
-          <button className="homeButton" onClick={() => navigate('/')}>Home</button>
-          <button className="books" onClick={() => navigate('/books')}>Books</button>
-        </form>
-    </div>
+    <Container maxWidth='sm'>
+      <Typography variant='h4' component='h1' gutterBottom>
+        Register
+      </Typography>
+        <Box
+          component='form'
+          onSubmit = {handleSubmit}
+          noValidate
+          sm={{ mt: 1 }}
+        >
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          label='Email Address'
+          name='email'
+          autoComplete='email'
+          autoFocus
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField 
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="firstname"
+          label="First Name"
+          autoComplete="firstname"
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="lastname"
+          label="Last Name"
+          autoComplete="lastname"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+        />
+        <Button
+          type='submit'
+          fullWidth
+          variant='contained'
+          sx={{ mt: 3, mb: 2 }}
+          disabled={isUpdating}
+        >
+          {isUpdating ? 'Registering...' : 'Register'}
+        </Button>
+        {error && (
+          <Typography color='error'>
+            Registration Failed: {error.data?.message || "Please Try Again"}
+          </Typography>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2}}>
+          <Button variant='outlined' onClick={() => navigate('/')}>Home</Button>
+          <Button variant='outlined' onClick={() => navigate('/books')}>Books</Button>
+        </Box>
+      </Box>
+    </Container>
   )
 }
