@@ -1,7 +1,7 @@
 import React from 'react'
 import Logout from './Logout'
 import { useAuthenticateQuery, useFetchUserDetailsQuery, useFetchCheckedOutBooksQuery, useReturnBookMutation } from "../API/api";
-import { CircularProgress, Typography, Button, List, ListItem, ListItemText, Box } from '@mui/material'
+import { Typography, Button, List, ListItem, ListItemText, Box } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 function Profile() {
