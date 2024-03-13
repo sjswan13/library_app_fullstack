@@ -6,7 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(160, 239, 204);
+  background-color: rgb(157, 184, 168);
 }
 
 #logo-image {
@@ -17,17 +17,21 @@ body {
 .home-container {
   padding: 20px;
   max-width: 800px;
-  margin: auto;
+  margin: 50px auto;
   text-align: center;
+  border: 2px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #08afa1;
 }
 
 .home-container h2 {
-  color: #333;
+  color: #181717;
   margin-bottom: 20px;
 }
 
 .home-container p {
-  color: #666;
+  color: #302e2e;
   margin: 10px 0;
 }
 
@@ -43,12 +47,12 @@ body {
 }
 
 .home-container .loginButton {
-  background-color: rgb(208, 92, 237);
+  background-color: rgb(187, 232, 50);
 }
 
 .home-container .books {
-  background-color:  #28a745;
-  color: white;
+  background-color:  #0f7226;
+  color: rgb(246, 240, 240);
 }
 
 .home-container book:hover {
@@ -56,11 +60,20 @@ body {
 }
 
 .home-container a {
-  color: #024511;
+  color: #02360d;
   text-decoration: none;
   font-weight: bold;
 }
 
 .home-container a:hover {
   text-decoration: underline;
+}
+
+.libraryImg {
+  display: block;
+  margin: 20px auto;
+  max-width: 90%;
+  border: 5px solid rgb(127, 123, 123);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }

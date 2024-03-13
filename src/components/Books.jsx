@@ -75,7 +75,7 @@ const AllBooks = () => {
             component={Link}
             to={`/books/${book.id}`}
             >
-              <ListItemText primary={book.title} />
+              <ListItemText primary={book.title} sx={{ color: 'black' }} />
             </ListItem>
           ))}
         </List>

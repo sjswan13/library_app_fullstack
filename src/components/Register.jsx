@@ -87,7 +87,7 @@ export default function RegistrationForm() {
           label="First Name"
           autoComplete="firstname"
           value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
+          onChange={(e) => setfirstname(e.target.value)}
         />
         <TextField
           margin="normal"
@@ -97,7 +97,7 @@ export default function RegistrationForm() {
           label="Last Name"
           autoComplete="lastname"
           value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => setlastname(e.target.value)}
         />
         <Button
           type='submit'

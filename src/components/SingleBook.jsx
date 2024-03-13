@@ -34,7 +34,7 @@ const SingleBook= () => {
     <Box sx={{ p: 3 }}>
       <Button
         startIcon={<ArrowBackIcon/>}
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, color: 'black' }}
         onClick={() => window.history.back()}
         >
         Back to Catalog
@@ -45,26 +45,30 @@ const SingleBook= () => {
           component='img'
           image={book.book.coverimage}
           alt={`Cover of ${book.book.title}`}
-          sx={{ width: 'auto', maxHeight: 600, margin: 'auto' }}
+          sx={{ width: 'auto', maxHeight: 600, margin: '15px auto' }}
           />
-        <CardContent>
-          <Typography gutterBottom variant='h5' component='div'>
-            {book.book.title}
-          </Typography>
-          <Typography variant='body2'color='text.secondary'>
-            Author: {book.book.author}
-          </Typography>
-          <Typography variant='body2' color='text.secondary'>
-            Description: {book.book.description}
-          </Typography>
-          {token && book.book.available && (
-            <Button onclick={handleCheckoutClick} variant='contained' color='primary' sx={{ mt: 2 }}>
-              Checkout
-            </Button>
-          )}
-        </CardContent>
+          <CardContent>
+            <Typography gutterBottom variant='h5' component='div'>
+              {book.book.title}
+            </Typography>
+            <Typography variant='body2'color='text.secondary'>
+              Author: {book.book.author}
+            </Typography>
+            <Typography variant='body2' color='text.secondary'>
+              Description: {book.book.description}
+            </Typography>
+            {token && book.book.available ? (
+              <Button onClick={handleCheckoutClick} variant='contained' color='primary' sx={{ mt: 2, color: 'black' }}>
+                Checkout
+              </Button>
+            ) : (
+              <Button disabled variant='containted' sx={{ mt: 2, bgcolor: 'grey.500', color: 'white', '$.Mui-disabled': { color: 'white' }}}>
+                Unavailable
+              </Button>
+            )}
+          </CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-          <Button variant='outlined' onClick={() => navigate('/')} sx={{ mr: 1}}>Home</Button>
+          <Button variant='outlined' onClick={() => navigate('/')} sx={{ mr: 1 }}>Home</Button>
           <Button variant='outlined' onClick={() => navigate('/books')}>Books</Button>
         </Box>
         </Card>
