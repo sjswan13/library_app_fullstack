@@ -4,7 +4,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api',
+    // baseUrl: 'https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api',
+    baseUrl: 'http://localhost:3001/api',
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if(token) {
@@ -12,8 +13,13 @@ export const api = createApi({
       }
       headers.set("Content-Type", "application/json")
       return headers;
-    }
-  }),
+    }, 
+    async onError({ error, dispatch }) {
+      if (error.status === 401 && error.data?.message === 'jwt expired') {
+      dispatch(logoutUser());
+      alert('Session expired. Please login again');
+      }
+  }}),
     endpoints: (builder) => ({
       fetchAllBooks: builder.query({
         query: () => '/books',
@@ -41,12 +47,13 @@ export const api = createApi({
           body,
         }),
       }),
+
       home: builder.query({
         query: () => '/', 
       }),
       checkoutBook: builder.mutation({
         query: ({ bookId, ...body }) => ({
-          url: `/books/${bookId}`,
+          url: `/books/${bookId}/checkout`,
           method: 'PATCH',
           body,
         })
@@ -81,6 +88,7 @@ export const {
   useFetchCheckedOutBooksQuery,
   useReturnBookMutation,
   useRefetchCheckedOutBooksQuery,
+  
 } = api;
 
 

@@ -64,6 +64,8 @@ const SingleBook= () => {
             ) : (
               <Button disabled variant='containted' sx={{ mt: 2, bgcolor: 'grey.500', color: 'white', '$.Mui-disabled': { color: 'white' }}}>
                 Unavailable
+        {console.log(book, 'book available?)')
+        }
               </Button>
             )}
           </CardContent>

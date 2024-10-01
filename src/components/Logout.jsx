@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { clearToken } from '../redux/authslice';
 import { useNavigate } from "react-router-dom";
 
+
 const Logout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
