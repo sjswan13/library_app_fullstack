@@ -66,8 +66,8 @@ export const api = createApi({
       }),
       returnBook: builder.mutation({
         query: ({ id }) => ({
-          url: `/reservations/${id}`,
-          method: 'DELETE',
+          url: `/books/${id}/return`,
+          method: 'PATCH',
         }),
       }),
       refetchCheckedOutBooks: builder.query({

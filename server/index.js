@@ -254,7 +254,7 @@ db.get('SELECT available FROM books WHERE id = ?', [bookId], (err, book) => {
   } else if (book.available === 1) {
     res.status(400).json({ message: 'Book is already returned' });
   } else {
-    db.run('UPDATE books SET available = 1 WHERE id = ?', [bookId], (err) => {
+    db.run('UPDATE books SET available = 1, checkedOutByUserId = NULL WHERE id = ?', [bookId], (err) => {
       if (err) {
         console.error('Error updating book', err);
       } else {
