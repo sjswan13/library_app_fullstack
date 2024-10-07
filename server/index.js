@@ -158,8 +158,8 @@ const seedBooks = () => {
           faker.lorem.words(3),
           faker.person.fullName(), 
           faker.lorem.paragraph(),
-          `https://picsum.photos/200/300`, //placeholder image
-          faker.datatype.boolean() ? 1: 0 //available (1 = true, 0 = false)
+          `https://picsum.photos/200/300`, 
+          faker.datatype.boolean() ? 1: 0 
         );
       }
       stmt.finalize(() => {
