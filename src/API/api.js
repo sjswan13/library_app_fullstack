@@ -61,8 +61,8 @@ export const api = createApi({
       fetchUserDetails: builder.query({
         query: () => '/users/me',
       }),
-      fetchCheckedOutBooks: builder.query({
-        query: () => `/reservations`,
+      fetchCheckedOutBooksByUser: builder.query({
+        query: (userId) => `/users/${userId}/checked-out-books`,
       }),
       returnBook: builder.mutation({
         query: ({ id }) => ({
@@ -85,7 +85,7 @@ export const {
   useAuthenticateQuery,
   useCheckoutBookMutation,
   useFetchUserDetailsQuery,
-  useFetchCheckedOutBooksQuery,
+  useFetchCheckedOutBooksByUserQuery,
   useReturnBookMutation,
   useRefetchCheckedOutBooksQuery,
   

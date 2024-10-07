@@ -101,7 +101,7 @@ app.post('/api/users/register', (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.run('INSER INTO users (email password) VALUES (?, ?)', [email, hashedPassword], (err) => {
+    db.run('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err) => {
       if(err) {
         console.error('Failed to insert user', err);
         return res.status(500).json({ message: 'Server error' });
@@ -200,6 +200,7 @@ app.get('/api/books/:id', (req, res) => {
 //Checkout book endpoint
 app.patch('/api/books/:id/checkout', authenticateToken, (req, res) => {
   const bookId = req.params.id;
+  const userId = req.user.id;
 
   db.get('SELECT available FROM books WHERE id = ?', [bookId], (err, book) => {
     if(err) {
@@ -210,7 +211,7 @@ app.patch('/api/books/:id/checkout', authenticateToken, (req, res) => {
     } else if(book.available === 0) {
       res.status(400).json({ message: 'Book is already checked out' });
     } else {
-      db.run('UPDATE books SET available = 0 WHERE id = ?', [bookId], (err) => {
+      db.run('UPDATE books SET available = 0, checkedOutByUserId = ? WHERE id = ?', [userId, bookId], (err) => {
         if(err) {
           console.error('Error updating book', err);
           res.status(500).json({ message: 'Server error' });
@@ -218,6 +219,24 @@ app.patch('/api/books/:id/checkout', authenticateToken, (req, res) => {
           res.json({ message: 'Book checked out successfully' });
         }
       });
+    }
+  });
+});
+
+//Checked out books endpoint
+app.get('/api/users/:id/checked-out-books', authenticateToken, (req, res) => {
+  const userId = req.params.id;
+
+  if(req.user.id !== parseInt(userId)) {
+    return res.status(403).json({ message: 'Unauthorized access' });
+  }
+
+  db.all('SELECT * FROM books WHERE checkedOutByUserId = ?', [userId], (err, rows) => {
+    if(err) {
+      console.error('Failed to fetch checked out books', err);
+      res.status(500).json({ message: 'Server error' });
+    } else {
+      res.json({ books: rows });
     }
   });
 });

@@ -1,20 +1,20 @@
 import React from 'react'
 import Logout from './Logout'
-import { useAuthenticateQuery, useFetchUserDetailsQuery, useFetchCheckedOutBooksQuery, useReturnBookMutation } from "../API/api";
+import { useAuthenticateQuery, useFetchUserDetailsQuery, useFetchCheckedOutBooksByUserQuery, useReturnBookMutation } from "../API/api";
 import { Typography, Button, List, ListItem, ListItemText, Box } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 function Profile() {
   
   const { data, error, isLoading } = useAuthenticateQuery();
+  const userId = data?.id;
   const { data: userDetails, error: userError, isLoading: userLoading } = useFetchUserDetailsQuery();
-  const { data: checkedOutBooks, error: booksError, isLoading: booksLoading, refetch } = useFetchCheckedOutBooksQuery();
+  const { data: checkedOutBooks, error: booksError, isLoading: booksLoading, refetch } = useFetchCheckedOutBooksByUserQuery(userId, { skip: !userId });
   const [returnBook, {isLoading: isUpdating, returnData}] = useReturnBookMutation();
 
   const handleReturnBook = async (id) => {
     try{
       await returnBook({ id }).unwrap();
-      // await refetchCheckedOutBooks();
       refetch();
     } catch (error) {
       console.error('Error returning book:', error);
@@ -27,7 +27,7 @@ function Profile() {
   }
 
   const userFullName = userDetails ? `${userDetails.firstname || ''} ${userDetails.lastname || ''}` : '';
-  const checkedOutBooksArray = checkedOutBooks.reservation || [];
+  const checkedOutBooksArray = checkedOutBooks.books || [];
   
   if(!data.isLoggedIn) {
     return (
