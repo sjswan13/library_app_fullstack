@@ -19,10 +19,6 @@ function Home() {
         <button className="loginButton" onClick={() => navigate('/users/login')}>Login Here!</button>
         <button className="books" onClick={() => navigate('/books')}>Books</button>
       </div>
-      <img className='libraryImg'
-        src='https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_504,q_80,w_760/v1/crm/boulder/Boulder-Public-Library_a149f746-5056-a36a-07530dec446a6fe9.jpg' 
-        alt='LibraryImg'>
-      </img>
     </div>
   )
 }
