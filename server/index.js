@@ -90,7 +90,7 @@ app.post('/api/users/register', (req, res) => {
   const { email, password } = req.body;
 
   db.get('SELECT * FROM users WHERE email = ?', [email], async (err, row) => {
-    if(err) {
+    if (err) {
       console.error('Database error', err);
       return res.status(500).json({ message: 'Server error' });
     }
@@ -101,14 +101,24 @@ app.post('/api/users/register', (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.run('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err) => {
-      if(err) {
-        console.error('Failed to insert user', err);
-        return res.status(500).json({ message: 'Server error' });
-      } else {
-        res.json({message: 'Registration successful'});
+    db.run(
+      'INSERT INTO users (email, password) VALUES (?, ?)',
+      [email, hashedPassword],
+      function (err) {
+        if (err) {
+          console.error('Failed to insert user', err);
+          return res.status(500).json({ message: 'Server error' });
+        } else {
+          const userId = this.lastID;
+          const token = jwt.sign(
+            { id: userId, email: email },
+            SECRET_KEY,
+            { expiresIn: '7d' }
+          );
+          res.json({ message: 'Registration successful', token });
+        }
       }
-    });
+    );
   });
 });
 
