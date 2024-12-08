@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.12",
     "@mui/lab": "^5.0.0-alpha.166",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.16.7",
     "@mui/system": "^5.15.11",
     "@reduxjs/toolkit": "^2.2.1",
     "bcrypt": "^5.1.1",
